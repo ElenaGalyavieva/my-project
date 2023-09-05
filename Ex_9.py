@@ -7,9 +7,14 @@ m = 0
 while m < 69:
     valid = {"login":"super_admin", "password":key[m]}
     response1 = requests.post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework", data=valid)
-    valid_cookie = dict(response1.cookies)
+    cookie = response1.cookies.get('auth_cookie')
+    valid_cookie = {'auth_cookie': cookie}
 
-    response2 = requests.post("https://playground.learnqa.ru/ajax/api/check_auth_cookie", data=valid_cookie)
-    print(response2.text)
+    response2 = requests.post("https://playground.learnqa.ru/ajax/api/check_auth_cookie", cookies=valid_cookie)
+    #print(response2.text)
+
+    if (response2.text != 'You are NOT authorized'):
+        print(f"Valid password: {key[m]}")
+        print(response2.text)
 
     m += 1

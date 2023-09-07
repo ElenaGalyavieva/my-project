@@ -7,5 +7,6 @@ class TestEx11:
         response = requests.get(url)
         some_cookie = response.cookies
         print(some_cookie)
+        assert response.status_code == 200, "Wrong response code"
 
-        assert some_cookie is not None, "Cookie is None"
+        assert "HomeWork" in some_cookie, "There is no field 'HomeWork' in the response"

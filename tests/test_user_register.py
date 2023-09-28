@@ -32,8 +32,7 @@ class TestUserRegister(BaseCase):
         assert response.content.decode("utf-8") == f"Users with email '{email}' already exists", f"Unexpected response content {response.content}"
 
     def test_incorrect_email(self):
-        email1 = 'vinkotov.example.com'
-        data = self.prepare_registration_data(email1)
+        data = self.prepare_registration_data_without()
 
         response = requests.post("https://playground.learnqa.ru/api/user/",
                                  data=data)

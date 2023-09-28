@@ -8,5 +8,5 @@ class TestEx12:
         print(some_header)
 
         assert response.status_code == 200, "Wrong response code"
-        print(f'"x-secret-homework-header:"{some_header.get("x-secret-homework-header")}')
+        print(f'x-secret-homework-header: {some_header.get("x-secret-homework-header")}')
         assert "x-secret-homework-header" in some_header, "There is no field 'x-secret-homework-header' in the response"

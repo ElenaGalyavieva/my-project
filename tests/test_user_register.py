@@ -1,5 +1,5 @@
 import pytest
-import requests
+from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
@@ -16,7 +16,7 @@ class TestUserRegister(BaseCase):
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
 
-        response = requests.post("https://playground.learnqa.ru/api/user/",
+        response = MyRequests.post("/user/",
                                  data=data)
 
         Assertions.assert_code_status(response, 200)
@@ -25,7 +25,7 @@ class TestUserRegister(BaseCase):
         email = 'vinkotov@example.com'
         data = self.prepare_registration_data(email)
 
-        response = requests.post("https://playground.learnqa.ru/api/user/",
+        response = MyRequests.post("/user/",
                                  data=data)
 
         Assertions.assert_code_status(response, 400)
@@ -34,7 +34,7 @@ class TestUserRegister(BaseCase):
     def test_incorrect_email(self):
         data = self.prepare_registration_data_without()
 
-        response = requests.post("https://playground.learnqa.ru/api/user/",
+        response = MyRequests.post("/user/",
                                  data=data)
         assert response.content.decode("utf-8") == "Invalid email format", f"Unexpected response content {response.content}"
         Assertions.assert_code_status(response, 400)
@@ -52,7 +52,7 @@ class TestUserRegister(BaseCase):
                      'firstName': first_name,
                      'lastName': last_name,
                      'email': email}
-            response1 = requests.post("https://playground.learnqa.ru/api/user/",
+            response1 = MyRequests.post("/user/",
                                      data=data1)
             Assertions.assert_code_status(response1, 400)
         elif param == 'no_username':
@@ -60,7 +60,7 @@ class TestUserRegister(BaseCase):
                      'firstName': first_name,
                      'lastName': last_name,
                      'email': email}
-            response2 = requests.post("https://playground.learnqa.ru/api/user/",
+            response2 = MyRequests.post("/user/",
                                      data=data2)
             Assertions.assert_code_status(response2, 400)
         elif param == 'no_firstName':
@@ -68,7 +68,7 @@ class TestUserRegister(BaseCase):
                      'password': password,
                      'lastName': last_name,
                      'email': email}
-            response3 = requests.post("https://playground.learnqa.ru/api/user/",
+            response3 = MyRequests.post("/user/",
                                      data=data3)
             Assertions.assert_code_status(response3, 400)
         elif param == 'no_lastName':
@@ -76,7 +76,7 @@ class TestUserRegister(BaseCase):
                      'password': password,
                      'firstName': first_name,
                      'email': email}
-            response4 = requests.post("https://playground.learnqa.ru/api/user/",
+            response4 = MyRequests.post("/user/",
                                      data=data4)
             Assertions.assert_code_status(response4, 400)
         elif param == 'no_email':
@@ -84,21 +84,19 @@ class TestUserRegister(BaseCase):
                      'password': password,
                      'firstName': first_name,
                      'lastName': last_name}
-            response5 = requests.post("https://playground.learnqa.ru/api/user/",
+            response5 = MyRequests.post("/user/",
                                      data=data5)
             Assertions.assert_code_status(response5, 400)
 
     def test_short_pass(self):
         data = self.prepare_registration_short_username()
-        response6 = requests.post(
-            "https://playground.learnqa.ru/api/user/",
+        response6 = MyRequests.post("/user/",
             data=data)
         Assertions.assert_code_status(response6, 400)
 
     def test_long_username(self):
         data = self.prepare_registration_long_username()
-        response7 = requests.post(
-            "https://playground.learnqa.ru/api/user/",
+        response7 = MyRequests.post("/user/",
             data=data)
         print(response7.status_code)
         Assertions.assert_code_status(response7, 200)
